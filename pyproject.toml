@@ -20,10 +20,10 @@ dependencies = [
     "websockets>=15.0.1",
     "asyncpg>=0.30.0",
     "pydantic-settings>=2.9.1",
-    "psycopg2>=2.9.10",
     "python-jose>=3.4.0",
     "pytest>=8.3.5",
     "pytest-asyncio>=1.0.0",
+    "psycopg2-binary>=2.9.10",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"

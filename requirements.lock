@@ -54,7 +54,7 @@ passlib==1.7.4
     # via backend
 pluggy==1.6.0
     # via pytest
-psycopg2==2.9.10
+psycopg2-binary==2.9.10
     # via backend
 pyasn1==0.4.8
     # via python-jose

@@ -23,8 +23,15 @@ settings = get_settings()
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     try:
-        # Get Alembic config file path
-        alembic_cfg = Config(os.path.join(Path(__file__).parent.parent, "alembic.ini"))
+        # Get Alembic config file path - используем правильный путь для контейнера
+        current_dir = Path(__file__).parent.parent
+        alembic_ini_path = current_dir / "alembic.ini"
+        
+        print(f"📍 Current directory: {current_dir}")
+        print(f"📍 Alembic config path: {alembic_ini_path}")
+        print(f"📍 Alembic config exists: {alembic_ini_path.exists()}")
+        
+        alembic_cfg = Config(str(alembic_ini_path))
         
         # Run migrations
         command.upgrade(alembic_cfg, "head")
@@ -51,7 +58,7 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
