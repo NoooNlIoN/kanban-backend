@@ -1,0 +1,48 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "FastAPI backend for a Trello clone application"
+authors = [
+    { name = "NoooNlIoN", email = "vla.chernickov@gmail.com" }
+]
+dependencies = [
+    "pydantic>=2.11.4",
+    "pydantic[email]>=2.11.4",
+    "fastapi>=0.115.12",
+    "uvicorn>=0.34.2",
+    "sqlalchemy>=2.0.40",
+    "alembic>=1.15.2",
+    "pyjwt>=2.8.0",
+    "passlib[bcrypt]>=1.7.4",
+    "python-multipart>=0.0.9",
+    "aiosqlite>=0.20.0",
+    "redis>=6.0.0",
+    "websockets>=15.0.1",
+    "asyncpg>=0.30.0",
+    "pydantic-settings>=2.9.1",
+    "psycopg2>=2.9.10",
+    "python-jose>=3.4.0",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=1.0.0",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pytest-asyncio>=1.0.0",
+    "pytest>=8.3.5",
+    "pytest-mock>=3.14.1",
+    "httpx>=0.28.1",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/backend"]
