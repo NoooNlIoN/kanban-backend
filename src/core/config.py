@@ -9,7 +9,7 @@ load_dotenv()
 
 class Settings(BaseSettings):
     # Database settings
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/db_kanban")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres:postgres@127.0.0.1:5432/db_kanban")
     
     # Application settings
     DEBUG: bool = os.getenv("DEBUG", "False").lower() in ("true", "1", "t")

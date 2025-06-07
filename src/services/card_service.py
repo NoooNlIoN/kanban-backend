@@ -95,7 +95,8 @@ class CardService:
         if load_relations:
             query = query.options(
                 selectinload(Card.assigned_users),
-                selectinload(Card.comments)
+                selectinload(Card.comments),
+                selectinload(Card.tags)
             )
             
         result = await db.execute(query)
@@ -119,7 +120,8 @@ class CardService:
         if load_relations:
             query = query.options(
                 selectinload(Card.assigned_users),
-                selectinload(Card.comments)
+                selectinload(Card.comments),
+                selectinload(Card.tags)
             )
             
         result = await db.execute(query)

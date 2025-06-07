@@ -7,6 +7,8 @@ from datetime import datetime
 from src.models.board import Board, BoardUserRole, board_users
 from src.models.column import Column  # Added import for Column
 from src.models.card import Card, Comment
+from src.models.tag import Tag
+from src.models.user import User
 
 
 def _prepare_assigned_users_in_cards(board: Board) -> Board:
@@ -354,6 +356,7 @@ class BoardService:
         query = select(Board).where(Board.id == board_id).options(
             selectinload(Board.columns).selectinload(Column.cards).selectinload(Card.assigned_users),
             selectinload(Board.columns).selectinload(Column.cards).selectinload(Card.comments),
+            selectinload(Board.columns).selectinload(Column.cards).selectinload(Card.tags),
         )
         
         result = await db.execute(query)
@@ -421,6 +424,7 @@ class BoardService:
         ).options(
             selectinload(Board.columns).selectinload(Column.cards).selectinload(Card.assigned_users),
             selectinload(Board.columns).selectinload(Column.cards).selectinload(Card.comments),
+            selectinload(Board.columns).selectinload(Column.cards).selectinload(Card.tags),
         )
         
         result = await db.execute(query)
@@ -458,6 +462,7 @@ class BoardService:
         query = select(Board).options(
             selectinload(Board.columns).selectinload(Column.cards).selectinload(Card.assigned_users),
             selectinload(Board.columns).selectinload(Column.cards).selectinload(Card.comments),
+            selectinload(Board.columns).selectinload(Column.cards).selectinload(Card.tags),
         )
         
         result = await db.execute(query)

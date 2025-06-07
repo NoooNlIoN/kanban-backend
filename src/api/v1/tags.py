@@ -11,6 +11,7 @@ from src.schemas.tag import TagCreate, TagResponse, TagUpdate, TagAssignment
 from src.services.tag_service import TagService
 from src.services.board_service import BoardService
 from src.services.card_service import CardService
+from src.models.column import Column
 
 router = APIRouter(
     prefix="/tags",
@@ -182,8 +183,8 @@ async def get_card_tags(
             detail="Карточка не найдена"
         )
     
-    # Получаем колонку, а затем доску для проверки прав доступа
-    column = await db.get(card.column.__class__, card.column_id)
+    # Получаем колонку напрямую через ID
+    column = await db.get(Column, card.column_id)
     if not column:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -227,8 +228,8 @@ async def assign_tag_to_card(
             detail="Карточка не найдена"
         )
     
-    # Получаем колонку, а затем доску для проверки прав доступа
-    column = await db.get(card.column.__class__, card.column_id)
+    # Получаем колонку напрямую через ID
+    column = await db.get(Column, card.column_id)
     if not column:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -250,6 +251,14 @@ async def assign_tag_to_card(
         required_roles=[BoardUserRole.OWNER, BoardUserRole.ADMIN, BoardUserRole.MEMBER],
         user=current_user
     )
+    
+    # Проверяем, не назначен ли уже этот тег данной карточке
+    existing_tags = await TagService.get_card_tags(db=db, card_id=assignment.card_id)
+    if any(existing_tag.id == assignment.tag_id for existing_tag in existing_tags):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Тег уже назначен этой карточке"
+        )
     
     # Назначаем тег карточке
     success = await TagService.assign_to_card(
@@ -290,8 +299,8 @@ async def remove_tag_from_card(
             detail="Карточка не найдена"
         )
     
-    # Получаем колонку, а затем доску для проверки прав доступа
-    column = await db.get(card.column.__class__, card.column_id)
+    # Получаем колонку напрямую через ID
+    column = await db.get(Column, card.column_id)
     if not column:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

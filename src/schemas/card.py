@@ -68,6 +68,7 @@ class CardInDB(CardBase):
 class CardResponse(CardInDB):
     """Schema for card response"""
     assigned_users: List[int] = []
+    tags: List['TagResponse'] = []
 
 
 class CardList(BaseModel):
@@ -88,4 +89,8 @@ class CardMove(BaseModel):
 
 class CardUserAssignment(BaseModel):
     """Schema for assigning a user to a card"""
-    user_id: int 
+    user_id: int
+
+# Import TagResponse after CardResponse definition to avoid circular import
+from src.schemas.tag import TagResponse
+CardResponse.model_rebuild() 

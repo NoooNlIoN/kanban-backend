@@ -33,6 +33,7 @@ def prepare_card_for_response(card: Union[Card, Dict[str, Any]]) -> Union[Card, 
     """
     Подготовка карточки для отправки в ответе API
     Преобразует объекты User в списке assigned_users в список их ID
+    Оставляет теги как есть (они уже в правильном формате)
     
     Args:
         card: Карточка (объект модели или словарь)
@@ -44,6 +45,7 @@ def prepare_card_for_response(card: Union[Card, Dict[str, Any]]) -> Union[Card, 
         # Если карточка - словарь (например, при ручном создании ответа)
         if "assigned_users" in card and card["assigned_users"] and not all(isinstance(u, int) for u in card["assigned_users"]):
             card["assigned_users"] = [getattr(user, "id", user) for user in card["assigned_users"]]
+        # Теги оставляем как есть - они уже в правильном формате для API
         return card
     else:
         # Если карточка - объект модели
@@ -53,6 +55,7 @@ def prepare_card_for_response(card: Union[Card, Dict[str, Any]]) -> Union[Card, 
                 user.id if hasattr(user, "id") else user 
                 for user in card.assigned_users
             ]
+        # Теги уже загружены правильно через selectinload и будут автоматически сериализованы
         return card
 
 
